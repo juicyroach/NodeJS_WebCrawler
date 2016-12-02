@@ -11,8 +11,8 @@ request({
 	}
 	var $ = cheerio.load(response);
 	var result = [];
-	var titles = $("li p");
+	var titles = $("a");
 	for (var i = 0; i < titles.length; i++) {
-		console.log($(titles[i]).text());
+		console.log($(titles[i]).text() + "  " + $(titles[i]).attr('href'));
 	}
 });
