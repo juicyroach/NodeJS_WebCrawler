@@ -2,8 +2,8 @@ var request = require("request");
 var cheerio = require("cheerio");
 var fs = require("fs");
 
-var dataListLimit = 300;
-var oneTimeParseLimit = 50;
+var dataListLimit = 500;
+var oneTimeParseLimit = 100;
 var overLoadSplitSize = 100;
 
 function getParseData(url, data, fn) {
@@ -86,7 +86,7 @@ function readFile(fn) {
 
 		var jsonArray = JSON.parse(data)
 			// var url = "http://www.businessweekly.com.tw/";
-		var url = "https://tw.yahoo.com/";
+		var url = "https://en.wikipedia.org/wiki/Anna_Kendrick";
 		if (jsonArray.length !== 0) {
 			var randomNumber = Math.floor((Math.random() * jsonArray.length) + 1);
 			url = jsonArray[randomNumber - 1]["url"];
