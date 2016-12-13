@@ -102,4 +102,5 @@ function start() {
 	readFile(getParseData);
 }
 
-start();
+// start();
+exports.start = start;
