@@ -2,9 +2,11 @@ var express = require('express');
 var app = express();
 
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/views'));
+
 
 app.get('/', function(req, res) {
-	res.render('display', {
+	res.render('portal', {
 		title: 'Test EJS',
 		users: ['Juicyroach', 'Irene']
 	})
