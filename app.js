@@ -98,8 +98,8 @@ app.get('/', function(req, res) {
 			}
 			var $ = cheerio.load(response);
 			var img = $("img");
-
-			var randomArray = getRandomArray(0, img.length - 1, img.length);
+			var length = img.length <= 5 ? img.length : 5;
+			var randomArray = getRandomArray(0, img.length - 1, length);
 
 			for (var i = 0; i < randomArray.length; i++) {
 				var imgUrl = $(img[randomArray[i]]).attr("src");
