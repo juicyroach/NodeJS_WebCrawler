@@ -2,6 +2,7 @@ var express = require('express');
 var fs = require("fs");
 var request = require("request");
 var cheerio = require("cheerio");
+var crawler = require("./crawler");
 
 var app = express();
 
@@ -48,7 +49,6 @@ app.get('/', function(req, res) {
 		};
 
 		getImage(crawlerResults, render);
-
 	});
 
 	function render(crawlerResults) {
@@ -129,10 +129,15 @@ app.get('/', function(req, res) {
 	function getRandom(minNum, maxNum) {
 		return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
 	}
-
-
 });
 
 app.listen(3000, function() {
 	console.log('Example app listening on port 3000!');
+});
+
+
+var schedule = require('node-schedule');
+var job = schedule.scheduleJob('*/5 * * * *', function() {
+	console.log("Schedule trigger crawler");
+	crawler.start();
 });
