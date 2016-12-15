@@ -1,5 +1,7 @@
 var express = require('express');
 var fs = require("fs");
+var request = require("request");
+var cheerio = require("cheerio");
 
 var app = express();
 
@@ -20,7 +22,7 @@ app.get('/', function(req, res) {
 
 		var jsonArray = JSON.parse(data)
 
-		var crawlerResult = [];
+		var crawlerResults = [];
 		var count = 0;
 		while (count < TOTAL_DISPLAY_COUNT) {
 			var title = "Empty Title";
@@ -41,24 +43,95 @@ app.get('/', function(req, res) {
 				url: url
 			};
 
-			crawlerResult.push(jsonResult);
+			crawlerResults.push(jsonResult);
 			count++;
 		};
 
+		getImage(crawlerResults, render);
+
+	});
+
+	function render(crawlerResults) {
 		var oneRowData = [];
-		for (var i = 0; i < crawlerResult.length; i++) {
-			oneRowData.push(crawlerResult[i]);
+		for (var i = 0; i < crawlerResults.length; i++) {
+			oneRowData.push(crawlerResults[i]);
 			if (i % COLUMN_IN_ROW_COUNT === (COLUMN_IN_ROW_COUNT - 1)) {
 				outputCrawlerResult.push(oneRowData);
 				oneRowData = [];
 			}
 		};
-
 		outputCrawlerObject["result"] = outputCrawlerResult;
 
-		res.render('portal', outputCrawlerObject);
-	});
 
+		// console.log(outputCrawlerResult);
+
+		res.render('portal', outputCrawlerObject);
+	}
+
+
+
+	function getImage(crawlerResults, callBackFunction) {
+		var count = 0;
+		for (var i = 0; i < crawlerResults.length; i++) {
+			var crawlerResult = crawlerResults[i];
+
+			getImageUrl(crawlerResult, function() {
+				count++;
+				if (count == crawlerResults.length) {
+					// console.log("All image finish");
+					callBackFunction(crawlerResults);
+				}
+			});
+		};
+	}
+
+	function getImageUrl(crawlerResult, callBackFunction) {
+		var url = crawlerResult["url"];
+		crawlerResult["imgUrl"] = "#";;
+		request({
+			url: url,
+			method: "GET"
+		}, function(error, rquest, response) {
+			if (error || !response) {
+				callBackFunction();
+				return;
+			}
+			var $ = cheerio.load(response);
+			var img = $("img");
+
+			var randomArray = getRandomArray(0, img.length - 1, img.length);
+
+			for (var i = 0; i < randomArray.length; i++) {
+				var imgUrl = $(img[randomArray[i]]).attr("src");
+				if (imgUrl && imgUrl.match("^http")) {
+					crawlerResult["imgUrl"] = imgUrl;
+					callBackFunction(imgUrl);
+					return;
+				}
+
+			};
+
+			callBackFunction("");
+		});
+	}
+
+	function getRandomArray(minNum, maxNum, n) {
+		var rdmArray = [n];
+		for (var i = 0; i < n; i++) {
+			var rdm = 0;
+			do {
+				var exist = false;
+				rdm = getRandom(minNum, maxNum);
+				if (rdmArray.indexOf(rdm) != -1) exist = true;
+			} while (exist);
+			rdmArray[i] = rdm;
+		}
+		return rdmArray;
+	}
+
+	function getRandom(minNum, maxNum) {
+		return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+	}
 
 
 });

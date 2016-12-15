@@ -58,16 +58,18 @@
         </div>
         <!-- /.row -->
 
-        <% for(var i=0; i<3; i++) { %>
+        <% for(var i=0; i<result.length; i++) { %>
         <!-- Projects Row -->
         <div class="row">
-            <% for(var j=0; j<3; j++) {
+            <% for(var j=0; j<result[i].length; j++) {
                 var title=result[i][j]["title"];
                 var content=result[i][j]["content"];
-                var url=result[i][j]["url"];%>
+                var url=result[i][j]["url"];
+                var imgUrl=result[i][j]["imgUrl"]%>
             <div class="col-md-4 portfolio-item">
                 <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+                    <!-- <img class="img-responsive" src="http://placehold.it/700x400" alt=""> -->
+                    <img class="img-responsive" src="<%= imgUrl%>" alt="">
                 </a>
                 <h3>
                     <a href="<%= url%>"><%= title %></a>
