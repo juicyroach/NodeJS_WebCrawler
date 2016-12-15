@@ -62,9 +62,6 @@ app.get('/', function(req, res) {
 		};
 		outputCrawlerObject["result"] = outputCrawlerResult;
 
-
-		// console.log(outputCrawlerResult);
-
 		res.render('portal', outputCrawlerObject);
 	}
 
@@ -78,7 +75,7 @@ app.get('/', function(req, res) {
 			getImageUrl(crawlerResult, function() {
 				count++;
 				if (count == crawlerResults.length) {
-					// console.log("All image finish");
+					console.log("All image finish");
 					callBackFunction(crawlerResults);
 				}
 			});
