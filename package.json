@@ -8,5 +8,8 @@
 		"express": "4.14.0",
 		"node-schedule": "1.2.0",
 		"request": "2.79.0"
-	}
+	},
+	"engines": {
+    "node": "4.4.7"
+  },
 }
