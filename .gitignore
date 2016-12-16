@@ -1,2 +1,5 @@
-/crawler_result.json
 npm-debug.log
+/node_modules
+.DS_Store
+/*.env
+/crawler_result.json
