@@ -86,7 +86,7 @@ function readFile(fn) {
 
 		var jsonArray = JSON.parse(data)
 			// var url = "http://www.businessweekly.com.tw/";
-		var url = "https://en.wikipedia.org/wiki/Anna_Kendrick";
+		var url = "http://www.hollywoodreporter.com/news/anna-kendrick-5-things-you-814131";
 		if (jsonArray.length !== 0) {
 			var randomNumber = Math.floor((Math.random() * jsonArray.length) + 1);
 			url = jsonArray[randomNumber - 1]["url"];
@@ -102,5 +102,4 @@ function start() {
 	readFile(getParseData);
 }
 
-// start();
 exports.start = start;
